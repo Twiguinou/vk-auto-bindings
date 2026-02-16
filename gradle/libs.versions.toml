@@ -1,0 +1,13 @@
+[versions]
+jpgen-api = "0.2.0"
+jpgen-generator = "0.2.0"
+
+[libraries]
+jpgen-api = { group = "fr.kenlek.jpgen", name = "jpgen-api", version.ref = "jpgen-api" }
+
+plugindep-jpgen-api = { group = "fr.kenlek.jpgen", name = "jpgen-api", version.ref = "jpgen-api" }
+plugindep-jpgen-generator = { group = "fr.kenlek.jpgen", name = "jpgen-generator", version.ref = "jpgen-generator" }
+
+[plugins]
+jpgen = { id = "fr.kenlek.jpgen.plugin", version = "0.0.1" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
