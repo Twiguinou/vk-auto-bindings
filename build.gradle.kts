@@ -15,7 +15,7 @@ plugins {
     alias(libs.plugins.mavenPublish)
 }
 
-group = "fr.kenlek.vulkan"
+group = "fr.kenlek"
 version = "1.4.343.0"
 description = "Automatically generated Vulkan bindings for Java"
 
