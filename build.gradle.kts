@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "fr.kenlek"
-version = "1.4.343.0"
+version = "1.4.344.1"
 description = "Automatically generated Vulkan bindings for Java"
 
 java {
@@ -35,11 +35,39 @@ dependencies {
     api(libs.jpgen.api)
 }
 
-val generationTask = tasks.register<GenerationTask>("generateVulkanBindings") {
+val vulkanSource: Provider<File> = layout.buildDirectory.dir("Vulkan-Headers").map(Directory::getAsFile)
+
+tasks.register("downloadVulkanHeaders") {
     group = "vulkan"
 
+    outputs.dir(vulkanSource)
+
+    doLast {
+        val zipFile = temporaryDir.resolve("Vulkan-Headers.zip")
+        uri("https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/heads/main.zip").toURL().openStream().use { input ->
+            zipFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        copy {
+            from(zipTree(zipFile))
+            into(vulkanSource)
+
+            eachFile {
+                relativePath = RelativePath(isDirectory, *relativePath.segments.drop(1).toTypedArray())
+                includeEmptyDirs = false
+            }
+        }
+    }
+}
+
+val generationTask = tasks.register<GenerationTask>("generateVulkanBindings") {
+    group = "vulkan"
+    dependsOn("downloadVulkanHeaders")
+
     val vulkanPackage = "fr.kenlek.vulkan"
-    val vulkanGlobalInclude: java.nio.file.Path = layout.projectDirectory.dir("extern/Vulkan-Headers/include").asFile.toPath()
+    val vulkanGlobalInclude: java.nio.file.Path = vulkanSource.get().toPath().resolve("include")
 
     inputs.dir(vulkanGlobalInclude)
 
