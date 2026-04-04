@@ -16,12 +16,12 @@ plugins {
 }
 
 group = "fr.kenlek"
-version = "1.4.344.1"
+version = "1.4.348.0"
 description = "Automatically generated Vulkan bindings for Java"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_26
+    targetCompatibility = JavaVersion.VERSION_26
 
     withSourcesJar()
 }

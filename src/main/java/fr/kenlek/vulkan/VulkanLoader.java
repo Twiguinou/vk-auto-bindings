@@ -4,6 +4,7 @@ import module fr.kenlek.jpgen.api;
 import module java.base;
 
 import static fr.kenlek.jpgen.api.ForeignUtils.*;
+import static fr.kenlek.jpgen.api.Platform.OS.*;
 import static java.lang.foreign.SymbolLookup.libraryLookup;
 
 public final class VulkanLoader
@@ -24,8 +25,8 @@ public final class VulkanLoader
     {
         // directly translated from volk
         SymbolLookup lookup = loadLookup(arena, propertyKey, Host.selectLazily(
-            new Host.Provider<>(Platform.OS.WINDOWS, () -> List.of(LibraryOption.of("vulkan-1.dll"))),
-            new Host.Provider<>(Platform.OS.MACOS, () ->
+            WINDOWS.provider(() -> List.of(LibraryOption.of("vulkan-1.dll"))),
+            MACOS.provider(() ->
             {
                 List<LibraryOption> values = new ArrayList<>();
                 values.add(LibraryOption.of("libvulkan.dylib"));
@@ -41,7 +42,7 @@ public final class VulkanLoader
 
                 return values;
             }),
-            new Host.Provider<>(Host.ALL_TARGETS, () -> List.of(
+            ALL_TARGETS.provider(() -> List.of(
                 LibraryOption.of("libvulkan.so.1"),
                 LibraryOption.of("libvulkan.so")
             ))

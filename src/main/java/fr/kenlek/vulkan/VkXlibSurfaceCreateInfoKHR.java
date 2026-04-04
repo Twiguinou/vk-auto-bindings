@@ -122,7 +122,7 @@ public record VkXlibSurfaceCreateInfoKHR(MemorySegment pointer) implements Addre
 
     public CLong window()
     {
-        return CLong.wrap(this.$window());
+        return new CLong(this.$window());
     }
 
     public void window(CLong value)
